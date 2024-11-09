@@ -43,4 +43,65 @@ def login():
         session['user_id'] = user.user_id
         return jsonify({'message': 'Login successful'}), 200
     return jsonify({'message': 'Invalid username or password'}), 401
-        
+
+#Route to generate random pairs for the week
+@bp.route('/pairs/generate', methods = ['POST'])  
+def generate_pairs():
+    week = datetime.utcnow().isocalendar()[1]
+
+    #Get all user IDs
+    users = User.query.all()
+    users_ids = [user.id for user in users]
+    random.shuffle(user_ids)
+
+    #An even number of users for pairing
+    if len(user_ids) % 2 !=0:
+        user_ids.pop()
+
+    pairs = []    
+    for i in range(0, len(user_ids), 2):
+        user1_id = user_ids[i]
+        user2_id = user_ids[i + 1]
+
+    #Check if this pair has been created before for the same week
+    existing_pair = Pair.query.filter_by(user1_id = user1_id, user2_id=user2_id, week=week).first()
+    if not existing_pair:
+        pair = Pair(user1_id=user1_id, user2_id=user2_id, week=week)
+        db.session.add(pair)
+        pairs.append((user1_id, user2_id))
+
+
+    db.session.commit()    
+    return jsonify({'message': 'Pairs generated', 'pairs': pairs}), 201
+
+#Route to get pairing history
+@bp.route('/pairs/history', methods=['GET'])
+def get_pairing_history():
+    week = request.args.get('week', type = int)
+    query= Pair.query
+
+    #Filter by week
+    if week:
+        query = query.filter_by(week=week)
+
+    pairs = query.all()    
+    pair_list = [{
+        'id': pair.id,
+        'user1': pair.user1.username,
+        'user2': pair.user2.username,
+        'week': pair.week,
+        'created_at': pair.created_at
+    } for pair in pairs]
+
+    return jsonify({'pairs': pair_list}), 200
+
+#Route to view current user
+@bp.route('/user', methods=['GET'])    
+def get_current_user():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'message': 'Not logged in'}), 401
+
+    user = User.query.get(user_id)    
+    return jsonify({'id': user.id, 'username': user.name, 'created_at': user.created_at}), 200
+
