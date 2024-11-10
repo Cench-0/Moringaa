@@ -52,16 +52,16 @@ def generate_pairs():
     #Get all user IDs
     users = User.query.all()
     users_ids = [user.id for user in users]
-    random.shuffle(user_ids)
+    random.shuffle(users_ids)
 
     #An even number of users for pairing
-    if len(user_ids) % 2 !=0:
-        user_ids.pop()
+    if len(users_ids) % 2 !=0:
+        users_ids.pop()
 
     pairs = []    
-    for i in range(0, len(user_ids), 2):
-        user1_id = user_ids[i]
-        user2_id = user_ids[i + 1]
+    for i in range(0, len(users_ids), 2):
+        user1_id = users_ids[i]
+        user2_id = users_ids[i + 1]
 
     #Check if this pair has been created before for the same week
     existing_pair = Pair.query.filter_by(user1_id = user1_id, user2_id=user2_id, week=week).first()
