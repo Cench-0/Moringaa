@@ -7,7 +7,7 @@ def generate_unique_pairs(user_ids, week):
     """
     random.shuffle(user_ids)  # Randomize user order
 
-    # Ensure even number of users by dropping last one if necessary
+    # even number of users by dropping last one if necessary
     if len(user_ids) % 2 != 0:
         user_ids.pop()
 
@@ -16,7 +16,7 @@ def generate_unique_pairs(user_ids, week):
         user1_id = user_ids[i]
         user2_id = user_ids[i + 1]
 
-        # Check if this pair already exists for the week
+        # Checking if this pair already exists for the week
         existing_pair = Pair.query.filter(
             (Pair.user1_id == user1_id) & (Pair.user2_id == user2_id) & (Pair.week == week)
         ).first()
