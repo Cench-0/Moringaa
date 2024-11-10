@@ -18,7 +18,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
-    CORS(app)  # Enable CORS for cross-origin requests
+    CORS(app)  # Enable CORS
 
     # Register Blueprints
     from .routes import bp as main_bp
@@ -26,5 +26,5 @@ def create_app():
 
     return app
 
-# Import models here to ensure they are registered with SQLAlchemy
+# Import models 
 from .models import User, Pair
