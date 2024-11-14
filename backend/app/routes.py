@@ -11,6 +11,12 @@ import random
 bp = Blueprint('main', __name__)
 
 
+@bp.route('/', methods=['GET'])
+def home():
+    return jsonify({'message': 'Welcome to the MoringaPair API'}), 200
+
+
+
 #route for creating new user
 @bp.route('/register', methods=['POST'])
 def register():
@@ -69,6 +75,7 @@ def generate_pairs():
         user2_id = users_ids[i + 1]
 
     #Check if this pair has been created before for the same week
+    pair = Pair(user1_id=user1_id, user2_id = user2_id, week=week)
     existing_pair = Pair.query.filter_by(user1_id = user1_id, user2_id=user2_id, week=week).first()
     if not existing_pair:
         pair = Pair(user1_id=user1_id, user2_id=user2_id, week=week)
