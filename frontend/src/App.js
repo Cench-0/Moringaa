@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header'; 
 import Sidebar from './components/Sidebar'; 
 import PairingDashboard from './components/PairingDashboard';
@@ -18,14 +18,14 @@ function App() {
         <div className="main-content">
           <Sidebar />
           <div className="content">
-            <Switch>
+            <Routes>
               <Route path="/" exact component={PairingDashboard} />
               <Route path="/history" component={History} />
               <Route path="/profile" component={UserProfile} />
               <Route path="/pairing" component={Pairing} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
-            </Switch>
+            </Routes>
           </div>
         </div>
       </div>
