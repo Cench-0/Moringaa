@@ -1,32 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function UserProfile() {
-    const [name, setName] = useState('John Doe');
-    const [email, setEmail] = useState('johndoe@example.com');
+const UserProfile = () => {
+  const [username, setUsername] = useState("");
 
-    const handleSave = (e) => {
-        e.preventDefault();
-        console.log("Profile saved", name, email);
-    };
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    setUsername(storedUsername || "");
+  }, []);
 
-    return (
-        <div>
-            <h2>User Profile</h2>
-            <form onSubmit={handleSave}>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="submit">Save Profile</button>
-            </form>
-        </div>
-    );
-}
+  const handleSave = () => {
+    localStorage.setItem('username', username);
+  };
+
+  return (
+    <div>
+      <h2>User Profile</h2>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Edit your username"
+      />
+      <button onClick={handleSave}>Save</button>
+    </div>
+  );
+};
 
 export default UserProfile;

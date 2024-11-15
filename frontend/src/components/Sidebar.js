@@ -1,16 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Sidebar() {
-    return (
-        <aside>
-            <ul>
-                <li><a href="/">Dashboard</a></li>
-                <li><a href="/pairing">Generate Pairs</a></li>
-                <li><a href="/history">History</a></li>
-                <li><a href="/profile">Profile</a></li>
-            </ul>
-        </aside>
-    );
+  return (
+    <div className="sidebar">
+      <ul>
+        <li>
+          <Link to="/dashboard">Dashboard</Link>
+        </li>
+        <li>
+          <Link to="/history">History</Link>
+        </li>
+        <li>
+          <Link to="/pairing">Pairing</Link>
+        </li>
+        <li>
+          <Link to="/profile">Profile</Link>
+        </li>
+      </ul>
+    </div>
+  );
 }
 
 export default Sidebar;
